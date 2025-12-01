@@ -7,7 +7,7 @@ export default function UsersDao() {
    users = [...users, newUser];
    return newUser;
  };
- const findAllUsers = () => model.find();;
+ const findAllUsers = () => model.find();
  const findUserById = (userId) => model.findById(userId)
  const findUserByUsername = (username) => model.findOne({ username: username });
  const findUserByCredentials = (username, password) =>
