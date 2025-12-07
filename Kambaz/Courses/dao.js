@@ -1,38 +1,50 @@
-import { v4 as uuidv4 } from "uuid";
-export default function CoursesDao(db) {
-  function findAllCourses() {
-    return db.courses;
+// Kambaz/Courses/dao.js
+import model from "./model.js";
+import EnrollmentModel from "../Enrollments/model.js";  // Add this import
+
+export default function CoursesDao() {  // Remove db parameter
+  
+  async function findAllCourses() {  // Add async
+    return await model.find({});  // Returns EVERYTHING including _id
   }
 
-  function findCoursesForEnrolledUsers(userId) {
-    const { courses, enrollments } = db;
-    const enrolledCourses = courses.filter((course) =>
-      enrollments.some(
-        (enrollment) =>
-          userId === enrollment.user && enrollment.course === course._id
-      )
+  async function findCoursesForEnrolledUsers(userId) {
+    // Find all enrollments for this user
+    const enrollments = await EnrollmentModel.find({ user: userId });
+    
+    // Extract course IDs
+    const courseIds = enrollments.map(enrollment => enrollment.course);
+    
+    // Find courses with projection - only get name and description
+    const courses = await model.find(
+      { _id: { $in: courseIds } }
+      // { name: 1, description: 1 }
     );
-    return enrolledCourses;
+    
+    return courses;
+  }
+  // Create a new course
+  async function createCourse(course) {  // Add async
+    // Don't add _id manually - MongoDB does this automatically
+    return await model.create(course);
+  }
+  
+  // Delete a course and all associated enrollments
+  async function deleteCourse(courseId) {  // Add async
+    // Delete the course
+    const result = await model.deleteOne({ _id: courseId });
+    
+    // Also delete all enrollments for this course
+    await EnrollmentModel.deleteMany({ course: courseId });
+    
+    return result;
   }
 
-  function createCourse(course) {
-    const newCourse = { ...course, _id: uuidv4() };
-    db.courses = [...db.courses, newCourse];
-    return newCourse;
+  // Update a course
+  async function updateCourse(courseId, courseUpdates) {  // Add async
+    return await model.updateOne({ _id: courseId }, { $set: courseUpdates });
   }
-  function deleteCourse(courseId) {
-    const { courses, enrollments } = db;
-    db.courses = courses.filter((course) => course._id !== courseId);
-    db.enrollments = enrollments.filter(
-      (enrollment) => enrollment.course !== courseId
-    );
-  }
-  function updateCourse(courseId, courseUpdates) {
-    const { courses } = db;
-    const course = courses.find((course) => course._id == courseId);
-    Object.assign(course, courseUpdates);
-    return course;
-  }
+
   return {
     findAllCourses,
     findCoursesForEnrolledUsers,
