@@ -124,5 +124,21 @@ export default[
     "section": "S101",
     "lastActivity": "1852-11-27",
     "totalActivity": "21:32:43"
+  },
+  {
+    "username": "usha",
+    "password": "123",
+    "firstName": "",
+    "lastName": "",
+    "email": "",
+    "_id": "280d8716-cb60-4c14-8641-8761d6ad4c1f"
+  },
+  {
+    "username": "sarvesh",
+    "password": "123",
+    "firstName": "",
+    "lastName": "",
+    "email": "",
+    "_id": "a6713ad7-5b92-4016-bb9b-2d648a00d4ec"
   }
 ]

@@ -17,7 +17,7 @@ app.use(
     cors({
         credentials: true,
         origin: (origin, callback) => {
-            if (!origin || origin.startsWith("http://localhost") || origin.endsWith(".vercel.app")) {
+                if (!origin || origin.startsWith("http://localhost") || origin.startsWith("http://127.") || origin.startsWith("http://172.") || origin.startsWith("http://192.168.") || origin.endsWith(".vercel.app")) {
                 return callback(null, true);
             }
             if (process.env.CLIENT_URL && origin === process.env.CLIENT_URL) {
