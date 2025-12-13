@@ -38,6 +38,8 @@ export default function EnrollmentsDao() {  // Removed db parameter
     enrollUserInCourse,
     unenrollUserFromCourse,
     findEnrollmentsForUser,
+    // Backwards-compatible alias for older calling code
+    findEnrollmentForUser: findEnrollmentsForUser,
     unenrollAllUsersFromCourse
   };
 }

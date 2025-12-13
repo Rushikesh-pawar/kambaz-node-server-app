@@ -19,28 +19,45 @@ const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING || "mongodb://1
 mongoose.connect(CONNECTION_STRING);
 
 const app = express();
+const app = express();
 
 // CORS configuration - MUST come before session
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(
   cors({
     credentials: true, // support cookies
-    origin: ["http://localhost:3000", "http://localhost:3001", process.env.CLIENT_URL, "https://kambaz-next-js-git-a6-rushikesh-pawars-projects-9b91e5f3.vercel.app"].filter(Boolean),
-    // restrict cross origin resource sharing to react app
+    origin: function (origin, callback) {
+      // allow requests with no origin (e.g., curl, server-to-server)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        return callback(null, true);
+      }
+      return callback(new Error("CORS policy: Origin not allowed"));
+    },
   })
 );
+
+// Handle preflight requests for all routes
+app.options("*", cors({ origin: allowedOrigins, credentials: true }));
 
 // Body parser - MUST come before session
 app.use(express.json());
 
-// Session configuraton - FIXED for local development
+// Session configuration
+const isProd = process.env.NODE_ENV === 'production';
 const sessionOptions = {
   secret: process.env.SESSION_SECRET || "kambaz",
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // MUST be false for HTTP (localhost)
+    secure: isProd, // true in production (HTTPS); false for local HTTP
     httpOnly: true,
-    sameSite: 'lax', // Changed from 'none' to 'lax' for localhost
+    sameSite: isProd ? 'none' : 'lax', // 'none' required for cross-site cookies in production
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 };
