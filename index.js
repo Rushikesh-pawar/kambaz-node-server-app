@@ -19,7 +19,6 @@ const CONNECTION_STRING = process.env.DATABASE_CONNECTION_STRING || "mongodb://1
 mongoose.connect(CONNECTION_STRING);
 
 const app = express();
-const app = express();
 
 // CORS configuration - MUST come before session
 const allowedOrigins = [
