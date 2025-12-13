@@ -406,5 +406,19 @@ export default
     "section": "S108",
     "lastActivity": "2020-12-23",
     "totalActivity": "38:39:50"
+  },
+    {
+    "_id": "92660",
+    "username": "hrishi",
+    "password": "123",
+    "firstName": "Galadriel",
+    "lastName": "Lady",
+    "email": "galadriel@lorien.com",
+    "dob": "1362-01-01",
+    "role": "FACULTY",
+    "loginId": "001234589S",
+    "section": "S108",
+    "lastActivity": "2020-12-23",
+    "totalActivity": "38:39:50"
   }
 ];
