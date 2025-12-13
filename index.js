@@ -24,7 +24,7 @@ const app = express();
 app.use(
   cors({
     credentials: true, // support cookies
-    origin: ["http://localhost:3000", "http://localhost:3001", process.env.CLIENT_URL, "https://kambaz-next-js-git-a6-samyak0510s-projects.vercel.app"].filter(Boolean),
+    origin: ["http://localhost:3000", "http://localhost:3001", process.env.CLIENT_URL, "https://kambaz-next-js-git-a6-rushikesh-pawars-projects-9b91e5f3.vercel.app"].filter(Boolean),
     // restrict cross origin resource sharing to react app
   })
 );
